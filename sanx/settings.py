@@ -28,6 +28,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_yasg',
+
+    'apps.auth',
+    'apps.order',
+    'apps.main'
 ]
 
 MIDDLEWARE = [
@@ -68,6 +72,18 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': env.str("DB_NAME"),
+#         'USER': env.str("DB_USER"),
+#         'PASSWORD': env.str("DB_PASSWORD"),
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -83,7 +99,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-Ru'
 
 TIME_ZONE = 'Asia/Tashkent'
 

@@ -10,7 +10,10 @@ USER_TYPE = (
 
 USER_STATUS = (
     ("Active", 'Active'),
-    ('Inactive', 'Inactive')
+    ('Passive', 'Passive'),
+    ('Waiting', 'Waiting'),
+    ('Edit', 'Edit'),
+    ('Fail', 'Fail'),
 )
 
 
