@@ -15,9 +15,10 @@ ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-AUTH_USER_MODEL = 'apps.auth.Account'
-
 INSTALLED_APPS = [
+    'apps.my_auth.apps.AuthConfig',
+    'apps.order.apps.OrderConfig',
+    'apps.main.apps.MainConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -29,10 +30,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
 
-    'apps.auth',
-    'apps.order',
-    'apps.main'
 ]
+
+LOCKDOWN_ADMIN = False
+
+AUTH_USER_MODEL = 'my_auth.Account'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

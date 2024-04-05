@@ -112,6 +112,7 @@ class Chat(models.Model):
 
 
 class Message(models.Model):
+    type_message = models.CharField(max_length=123)
     chat_id = models.PositiveIntegerField()
     from_id = models.PositiveIntegerField()
     to_id = models.PositiveIntegerField()

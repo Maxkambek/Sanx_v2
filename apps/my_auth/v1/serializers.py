@@ -17,4 +17,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginVerifySerializer(serializers.ModelSerializer):
     class Meta:
         model = VerifyCode
-        fields = ['phone', 'code']
+        fields = ['phone', 'code', 'created_at']
+
+
+

@@ -62,7 +62,7 @@ class RegisterAPIView(generics.GenericAPIView):
         verification_code = str(randint(10000, 100000))
         send_sms(request.data['phone'], verification_code)
         VerifyCode.objects.create(phone=request.data['phone'], code=verification_code)
-        serializer.save(is_active=False)
+        serializer.save(is_active=False, password='12345678')
         return Response({"success": True, 'message': "A confirmation code was sent to the phone number!!!"},
                         status=status.HTTP_200_OK)
 
@@ -104,8 +104,8 @@ class DeleteAccountView(generics.GenericAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def delete(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         user = Account.objects.filter(id=self.request.user.id).first()
-        user.delete()
-
-        return Response({"success": True, 'message': 'Account has been deleted'}, status=204)
+        user.is_active = False
+        user.save()
+        return Response({"success": True, 'message': 'Account has been deleted'}, status=200)
