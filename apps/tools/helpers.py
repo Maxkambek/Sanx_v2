@@ -20,13 +20,18 @@ USER_STATUS = (
     ('Fail', 'Fail'),
 )
 
-
-#
-# def send_auth_code(phone, code):
-#     verification_code = str(randint(10000, 100000))
-#     result = send_sms(phone, f'Tadiqlash kodingiz: {code}')
-#     VerifyCode.objects.create(phone=phone, code=verification_code)
-#     return result
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Snippets API",
+        default_version='v1',
+        description="Test description",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
+)
 
 
 def send_sms(phone, message):
@@ -41,17 +46,3 @@ def send_sms(phone, message):
     }
     response = requests.post(url=url, data=data, headers=headers)
     return response
-
-
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Snippets API",
-        default_version='v1',
-        description="Test description",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@snippets.local"),
-        license=openapi.License(name="BSD License"),
-    ),
-    public=True,
-    permission_classes=[permissions.AllowAny],
-)
