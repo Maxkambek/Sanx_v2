@@ -3,7 +3,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django_filters.rest_framework import DjangoFilterBackend
 from apps.my_auth.models import Account, VerifyCode
 from .serializers import AccountSerializer, VerifyCodeSerializer, AdminLoginSerializer
 from rest_framework import generics, status, viewsets
@@ -35,11 +35,13 @@ class AdminLoginView(APIView):
 class MyViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
+    filter_backends = [DjangoFilterBackend]
 
 
 class AccountViewSet(MyViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
+    filterset_fields = ['name', 'phone', 'user_type', 'is_active', 'is_staff', 'is_superuser', 'user_status']
 
 
 class VerifyCodeViewSet(MyViewSet):
