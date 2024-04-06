@@ -191,7 +191,6 @@ class TransportInformationSerializer(serializers.ModelSerializer):
         model = TransportInformation
         fields = [
             'id',
-            'user_id',
             'passport_type',
             'passport',
             'passport_expiration',

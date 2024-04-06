@@ -2,6 +2,8 @@ from random import randint
 from rest_framework import generics, status, authentication, permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .serializers import LoginSerializer, RegisterSerializer, LoginVerifySerializer
 from ..models import Account, VerifyCode
 from ...tools.helpers import send_sms
@@ -89,7 +91,7 @@ class RegisterVerifyView(generics.GenericAPIView):
         }, status=200)
 
 
-class LogoutView(generics.GenericAPIView):
+class LogoutView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
@@ -100,7 +102,7 @@ class LogoutView(generics.GenericAPIView):
         return Response({"success": True, 'message': 'logged out'}, status=200)
 
 
-class DeleteAccountView(generics.GenericAPIView):
+class DeleteAccountView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
