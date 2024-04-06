@@ -41,7 +41,7 @@ class LoginVerifyAPIView(generics.GenericAPIView):
         return Response({
             "success": True,
             "message": "User successfully verified",
-            "token": token.key,
+            "token": str(token),
             "user_id": user.id
         }, status=200)
 
@@ -53,7 +53,7 @@ class RegisterAPIView(generics.GenericAPIView):
         serializer = RegisterSerializer(data=request.data)
         user = None
         if serializer.is_valid(raise_exception=True):
-            user = Account.objects.filter(phone=serializer.data['phone']).first()
+            user = Account.objects.filter(phone=serializer.validated_data['phone']).first()
         if user:
             return Response({"message": "This number is already registered"}, status=400)
         verify = VerifyCode.objects.filter(phone=request.data['phone']).first()
@@ -84,7 +84,7 @@ class RegisterVerifyView(generics.GenericAPIView):
         return Response({
             "success": True,
             "message": "User successfully verified",
-            "token": token.key,
+            "token": str(token),
             "user_id": user.id
         }, status=200)
 

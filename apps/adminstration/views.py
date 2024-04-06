@@ -41,7 +41,6 @@ class MyViewSet(viewsets.ModelViewSet):
 class AccountViewSet(MyViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    filterset_fields = ['name', 'phone', 'user_type', 'is_active', 'is_staff', 'is_superuser', 'user_status']
 
 
 class VerifyCodeViewSet(MyViewSet):

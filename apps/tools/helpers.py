@@ -37,7 +37,7 @@ schema_view = get_schema_view(
 def send_sms(phone, message):
     url = "http://notify.eskiz.uz/api/message/sms/send"
     headers = {
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTEwMTg0MzUsImlhdCI6MTcwODQyNjQzNSwicm9sZSI6InVzZXIiLCJzaWduIjoiMjMzNWM0NDdjZjRiMmVjNjI1ODFkZTkyMTljODI3NjM0Y2VhYmVjOWU5Yzg3ZjRhMjVmNzU0ZjU0OTA2MzIwNCIsInN1YiI6IjQyNDcifQ.gqD09z2NF8iBWsM6wTiI87PLzHUZba8xbN90sKO8Ow4"}
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTQ5OTE2ODMsImlhdCI6MTcxMjM5OTY4Mywicm9sZSI6InVzZXIiLCJzaWduIjoiNTQzOWFkYzQyMzVjYjNjZDIwMzNlZmIwOTFiYzg2NzI4NDIyNzA5NDcxNGM0NmRmOTc3MTNiOTM4ZjVkYmNjYiIsInN1YiI6IjEwNTMifQ.CT_JbuU5UXaxhpuPQVgyCTbL_sFWuFdgNHQYTIV4pX4"}
     data = {
         'mobile_phone': phone,
         'message': message,
