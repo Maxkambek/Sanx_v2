@@ -28,19 +28,23 @@ class AdminLoginView(APIView):
         user = Account.objects.filter(phone=phone).first()
         if not user or not user.check_password(password) or not user.is_active or not user.is_superuser:
             return Response({'message': 'User is not found'}, status=status.HTTP_400_BAD_REQUEST)
-        token = Token.objects.get_or_create(user=user)
+        try:
+            token = Token.objects.get(user=user)
+        except:
+            token = Token.objects.create(user=user)
         return Response({'token': str(token), 'user_id': user.id, 'role': user.user_type}, status=status.HTTP_200_OK)
 
 
 class MyViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
-    filter_backends = [DjangoFilterBackend]
 
 
 class AccountViewSet(MyViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['first_name', 'user_type', 'is_staff', 'is_active', 'is_superuser']
 
 
 class VerifyCodeViewSet(MyViewSet):
@@ -53,11 +57,15 @@ class VerifyCodeViewSet(MyViewSet):
 class RegionViewSet(MyViewSet):
     queryset = Region.objects.all()
     serializer_class = RegionSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name', 'region_type', 'parent_id']
 
 
 class CatalogViewSet(MyViewSet):
     queryset = Catalog.objects.all()
     serializer_class = CatalogSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name', 'type_catalog', 'parent_id']
 
 
 class UserFilesViewSet(MyViewSet):

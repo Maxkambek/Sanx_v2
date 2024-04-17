@@ -30,6 +30,6 @@ router.register(r'chat', views.ChatViewSet)
 router.register(r'messages', views.MessageViewSet)
 
 urlpatterns = [
-    path('amin-login/', views.AdminLoginView.as_view()),
+    path('admin-login/', views.AdminLoginView.as_view()),
     path('', include(router.urls)),
 ]

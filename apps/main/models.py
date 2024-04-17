@@ -1,11 +1,13 @@
 from django.db import models
 
+from apps.tools.helpers import REGION_TYPE, CATALOG_TYPE, STORY_TYPE
+
 
 class Region(models.Model):
     name = models.CharField(max_length=123)
     flag = models.FileField(upload_to='regions/')
     parent_id = models.PositiveIntegerField(null=True, blank=True)
-    region_type = models.CharField(max_length=123)
+    region_type = models.CharField(max_length=123, choices=REGION_TYPE)
     order_on = models.PositiveIntegerField()
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -18,6 +20,7 @@ class Catalog(models.Model):
     order_on = models.PositiveIntegerField()
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    type_catalog = models.CharField(max_length=123, choices=CATALOG_TYPE, default='First')
     updated_at = models.DateTimeField(auto_now=True)
 
 
@@ -50,9 +53,9 @@ class Notification(models.Model):
 class Story(models.Model):
     user_id = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    story_type = models.CharField(max_length=123)
+    story_type = models.CharField(max_length=123,choices=STORY_TYPE, default='Video')
     file_url = models.FileField(upload_to='user/story')
-
+git
 
 class PaymentType(models.Model):
     name = models.CharField(max_length=123)

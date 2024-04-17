@@ -29,7 +29,8 @@ class CatalogSerializer(serializers.ModelSerializer):
             'order_on',
             'status',
             'created_at',
-            'updated_at'
+            'updated_at',
+            'type_catalog'
         ]
 
 

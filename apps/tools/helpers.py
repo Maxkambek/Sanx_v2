@@ -7,9 +7,20 @@ USER_TYPE = (
     ("Driver", 'Driver'),
     ("Client", 'Client'),
     ("Company", 'Company'),
-
     ("Administrator", 'Administrator'),
     ('SuperAdmin', 'SuperAdmin')
+)
+
+REGION_TYPE = (
+    ("Continent", 'Continent'),
+    ("Country", 'Country'),
+    ("District", 'District'),
+)
+
+CATALOG_TYPE = (
+    ("First", "First"),
+    ("Second", "Second"),
+    ("Third", "Third"),
 )
 
 USER_STATUS = (
@@ -18,6 +29,12 @@ USER_STATUS = (
     ('Waiting', 'Waiting'),
     ('Edit', 'Edit'),
     ('Fail', 'Fail'),
+)
+
+STORY_TYPE = (
+    ('Video', 'Video'),
+    ('Audio', 'Audio'),
+    ('Image', 'Image'),
 )
 
 schema_view = get_schema_view(
