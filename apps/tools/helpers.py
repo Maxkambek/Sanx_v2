@@ -50,6 +50,9 @@ schema_view = get_schema_view(
     permission_classes=[permissions.AllowAny],
 )
 
+USER_FILES_TYPE = (
+    ('CLIENT')
+)
 
 def send_sms(phone, message):
     url = "http://notify.eskiz.uz/api/message/sms/send"

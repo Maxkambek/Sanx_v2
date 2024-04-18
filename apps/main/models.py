@@ -6,12 +6,15 @@ from apps.tools.helpers import REGION_TYPE, CATALOG_TYPE, STORY_TYPE
 class Region(models.Model):
     name = models.CharField(max_length=123)
     flag = models.FileField(upload_to='regions/')
-    parent_id = models.PositiveIntegerField(null=True, blank=True)
+    parent_id = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL)
     region_type = models.CharField(max_length=123, choices=REGION_TYPE)
     order_on = models.PositiveIntegerField()
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Catalog(models.Model):
@@ -53,9 +56,9 @@ class Notification(models.Model):
 class Story(models.Model):
     user_id = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    story_type = models.CharField(max_length=123,choices=STORY_TYPE, default='Video')
+    story_type = models.CharField(max_length=123, choices=STORY_TYPE, default='Video')
     file_url = models.FileField(upload_to='user/story')
-git
+
 
 class PaymentType(models.Model):
     name = models.CharField(max_length=123)
@@ -124,14 +127,18 @@ class Color(models.Model):
 
 class TransportInformation(models.Model):
     user_id = models.PositiveIntegerField()
+
     passport_type = models.CharField(max_length=222)
     passport = models.FileField(upload_to='passport/')
     passport_expiration = models.DateField()
+
     driver_license = models.FileField(upload_to='driver_license/')
+
     payment_type_id = models.PositiveIntegerField()
     car_weight_type_id = models.PositiveIntegerField()
     car_mark_id = models.PositiveIntegerField()
     car_type_id = models.PositiveIntegerField()
     color_id = models.PositiveIntegerField()
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

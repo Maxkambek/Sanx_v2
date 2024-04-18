@@ -3,8 +3,8 @@ from . import views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register(r'subscriptions', views.SubscriptionViewSet)
-router.register(r'notifications', views.NotificationViewSet)
+# router.register(r'subscriptions', views.SubscriptionViewSet)
+# router.register(r'notifications', views.NotificationViewSet)
 router.register(r'story', views.StoryViewSet)
 
 urlpatterns = [
@@ -20,6 +20,8 @@ urlpatterns = [
     path('car-brand/', views.CarBrandList.as_view(), name='car-brand'),
     path('car-mark/', views.CarMarkList.as_view(), name='car-mark'),
     path('color/', views.ColorList.as_view(), name='color'),
+    path('notifications/', views.NotificationListAPIView.as_view(), name='color'),
+    path('notification/<int:pk>/', views.NotificationUpdate.as_view(), name='color'),
     path('transport-information/', views.TransportInformationList.as_view(), name='transport-information'),
     path('transport-information-create/', views.TransportInformationCreate.as_view(),
          name='transport-information-create'),

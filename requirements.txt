@@ -8,3 +8,4 @@ gunicorn
 pillow
 psycopg2
 requests
+django-jazzmin

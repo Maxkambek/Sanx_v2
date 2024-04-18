@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'apps.my_auth.apps.AuthConfig',
     'apps.order.apps.OrderConfig',
     'apps.main.apps.MainConfig',
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

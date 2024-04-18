@@ -1,4 +1,3 @@
-from django_filters import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 
@@ -43,6 +42,22 @@ class UserFilesRUD(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
+class NotificationListAPIView(generics.ListAPIView):
+    serializer_class = main_serializers.NotificationSerializer
+    queryset = Notification.objects.all()
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user_id', 'is_read']
+
+
+class NotificationUpdate(generics.UpdateAPIView):
+    serializer_class = main_serializers.NotificationSerializer
+    queryset = Notification.objects.all()
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = [permissions.IsAuthenticated]
+
+
 class SubscriptionViewSet(viewsets.ModelViewSet):
     serializer_class = main_serializers.SubscriptionSerializer
     queryset = Subscription.objects.all()
@@ -50,15 +65,6 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['watcher_id', 'user_id']
-
-
-class NotificationViewSet(viewsets.ModelViewSet):
-    serializer_class = main_serializers.NotificationSerializer
-    queryset = Notification.objects.all()
-    authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['user_id', 'is_read']
 
 
 class StoryViewSet(viewsets.ModelViewSet):
@@ -140,4 +146,3 @@ class TransportInformationCreate(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user_id=self.request.user)
-
