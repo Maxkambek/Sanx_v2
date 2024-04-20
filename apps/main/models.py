@@ -19,7 +19,7 @@ class Region(models.Model):
 
 class Catalog(models.Model):
     name = models.CharField(max_length=123)
-    parent_id = models.PositiveIntegerField(null=True, blank=True)
+    parent_id = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL)
     order_on = models.PositiveIntegerField()
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -88,7 +88,7 @@ class CarWeightType(models.Model):
 
 
 class CarType(models.Model):
-    car_weight_type_id = models.PositiveIntegerField()
+    car_weight_type_id = models.ForeignKey(CarWeightType, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=222)
     order_on = models.PositiveIntegerField()
     photo_url = models.FileField(upload_to='car_type/')
@@ -101,14 +101,14 @@ class CarType(models.Model):
 class CarBrand(models.Model):
     name = models.CharField(max_length=222)
     logo_url = models.FileField(upload_to='car_brand/')
-    car_type_id = models.PositiveIntegerField()
+    car_type_id = models.ForeignKey(CarType, on_delete=models.SET_NULL, null=True)
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 class CarMark(models.Model):
-    car_brand_id = models.PositiveIntegerField()
+    car_brand_id = models.ForeignKey(CarBrand, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=222)
     status = models.BooleanField(default=False)
     order_on = models.PositiveIntegerField()

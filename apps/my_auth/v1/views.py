@@ -39,7 +39,10 @@ class LoginVerifyAPIView(generics.GenericAPIView):
         user = Account.objects.filter(phone=phone).first()
         user.is_active = True
         user.save()
-        token = Token.objects.get_or_create(user=user)
+        try:
+            token = Token.objects.get(user=user)
+        except:
+            token = Token.objects.create(user=user)
         return Response({
             "success": True,
             "message": "User successfully verified",
@@ -82,7 +85,10 @@ class RegisterVerifyView(generics.GenericAPIView):
         user = Account.objects.filter(phone=phone).first()
         user.is_active = True
         user.save()
-        token = Token.objects.get_or_create(user=user)
+        try:
+            token = Token.objects.get(user=user)
+        except:
+            token = Token.objects.create(user=user)
         return Response({
             "success": True,
             "message": "User successfully verified",
