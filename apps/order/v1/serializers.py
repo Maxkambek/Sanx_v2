@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from ..models import Order, TransportDocument, OrderItem, Payment, Transaction, OrderApplicant, OrderStatus, OrderView, \
-    Chat, Message
+    Chat, Message, OrderFiles
+from ...adminstration.serializers import AccountSerializer
+from ...main.v1.serializers import CatalogSerializer, CurrencySerializer, PaymentTypeSerializer, RegionSerializer, \
+    CarTypeSerializer
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -32,6 +35,15 @@ class OrderSerializer(serializers.ModelSerializer):
             'created_by',
             'updated_at',
             'updated_by'
+        ]
+
+
+class OrderFilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderFiles
+        fields = [
+            'order',
+            'file'
         ]
 
 
@@ -169,4 +181,67 @@ class MessageSerializer(serializers.ModelSerializer):
             'is_read',
             'read_time',
             'created_at'
+        ]
+
+
+class OrderListSerializer(serializers.ModelSerializer):
+    catalog_id = CatalogSerializer(many=False)
+    currency_id = CurrencySerializer(many=False)
+    payment_type_id = PaymentTypeSerializer(many=False)
+    from_region_id = RegionSerializer(many=False)
+    to_region_id = RegionSerializer(many=False)
+    transport_type_id = CarTypeSerializer(many=False)
+    transport_document_id = TransportDocumentSerializer(many=False)
+    region_id = RegionSerializer(many=False)
+    status_id = OrderStatusSerializer(many=False)
+    created_by = AccountSerializer(many=False)
+    order_files = OrderFilesSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = [
+            'id',
+            'name',
+            'catalog_id',
+            'order_type',
+            'price',
+            'prepaid',
+            'currency_id',
+            'payment_type_id',
+            'from_region_id',
+            'to_region_id',
+            'from_address',
+            'to_address',
+            'transport_type_id',
+            'upload_date',
+            'weight',
+            'brutto',
+            'volume',
+            'transport_document_id',
+            'region_id',
+            'status_id',
+            'note',
+            'created_at',
+            'created_by',
+            'updated_at',
+            'updated_by',
+            'order_files'
+        ]
+
+
+class OrderApplicantListSerializer(serializers.ModelSerializer):
+    order_id = OrderSerializer(many=False)
+    user_id = AccountSerializer(many=False)
+    created_by = AccountSerializer(many=False)
+
+    class Meta:
+        model = OrderApplicant
+        fields = [
+            'id',
+            'order_id',
+            'user_id',
+            'note',
+            'status',
+            'created_at',
+            'created_by'
         ]

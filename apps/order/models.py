@@ -1,31 +1,6 @@
 from django.db import models
-
-
-class Order(models.Model):
-    name = models.CharField(max_length=123)
-    catalog_id = models.PositiveIntegerField()
-    order_type = models.CharField(max_length=123)
-    price = models.DecimalField(max_digits=20, decimal_places=2)
-    prepaid = models.DecimalField(max_digits=20, decimal_places=2)
-    currency_id = models.PositiveIntegerField()
-    payment_type_id = models.PositiveIntegerField()
-    from_region_id = models.PositiveIntegerField()
-    to_region_id = models.PositiveIntegerField()
-    from_address = models.CharField(max_length=223)
-    to_address = models.CharField(max_length=223)
-    transport_type_id = models.PositiveIntegerField()
-    upload_date = models.DateTimeField(auto_now_add=True)
-    weight = models.DecimalField(max_digits=20, decimal_places=2)
-    brutto = models.DecimalField(max_digits=20, decimal_places=2)
-    volume = models.DecimalField(max_digits=20, decimal_places=2)
-    transport_document_id = models.PositiveIntegerField()
-    region_id = models.PositiveIntegerField()
-    status_id = models.PositiveIntegerField()
-    note = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.PositiveIntegerField()
-    updated_at = models.DateTimeField(auto_now=True)
-    updated_by = models.PositiveIntegerField()
+from apps.main.models import Region, PaymentType, Currency, Catalog, CarType
+from apps.my_auth.models import Account
 
 
 class TransportDocument(models.Model):
@@ -35,9 +10,69 @@ class TransportDocument(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
+
+class OrderStatus(models.Model):
+    name = models.CharField(max_length=123)
+    order_on = models.PositiveIntegerField()
+    change_allow_status = models.CharField(max_length=123)
+    status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Order(models.Model):
+    ORDER_TYPE_CHOICES = (
+        ('Order', 'Order'),
+        ('Driver', 'Driver')
+    )
+    name = models.CharField(max_length=123)
+    catalog_id = models.ForeignKey(Catalog, on_delete=models.SET_NULL, null=True, blank=True)
+    order_type = models.CharField(max_length=123, choices=ORDER_TYPE_CHOICES, default='Order')
+    price = models.DecimalField(max_digits=20, decimal_places=2)
+    prepaid = models.DecimalField(max_digits=20, decimal_places=2)
+    currency_id = models.ForeignKey(Currency, on_delete=models.CASCADE)
+    payment_type_id = models.ForeignKey(PaymentType, on_delete=models.CASCADE)
+    from_region_id = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True, related_name='from_region')
+    to_region_id = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True, related_name='to_region')
+    from_address = models.CharField(max_length=223)
+    to_address = models.CharField(max_length=223)
+    transport_type_id = models.ForeignKey(CarType, on_delete=models.SET_NULL, null=True)
+    upload_date = models.DateTimeField(auto_now_add=True)
+    weight = models.DecimalField(max_digits=20, decimal_places=2)
+    brutto = models.DecimalField(max_digits=20, decimal_places=2)
+    volume = models.DecimalField(max_digits=20, decimal_places=2)
+    transport_document_id = models.ForeignKey(TransportDocument, on_delete=models.CASCADE,
+                                              related_name='transport_documents')
+    region_id = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='order_region')
+    status_id = models.ForeignKey(OrderStatus, on_delete=models.CASCADE, related_name="order_status")
+    note = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='order_owner')
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='order_updated_by')
+
+    def __str__(self):
+        return self.name
+
+
+class OrderFiles(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='order_files')
+    file = models.FileField(upload_to='order_files')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.order.name
+
 
 class OrderItem(models.Model):
-    order_id = models.PositiveIntegerField()
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
     order_item_type = models.CharField(max_length=123)
     price = models.DecimalField(max_digits=20, decimal_places=2)
     prepaid = models.DecimalField(max_digits=20, decimal_places=2)
@@ -46,8 +81,8 @@ class OrderItem(models.Model):
     weight = models.DecimalField(max_digits=20, decimal_places=2)
     brutto = models.DecimalField(max_digits=20, decimal_places=2)
     status_id = models.PositiveIntegerField()
-    owner_id = models.PositiveIntegerField()
-    executor_id = models.PositiveIntegerField()
+    owner_id = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='owner_id')
+    executor_id = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='executor_id')
     note = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -79,21 +114,12 @@ class Transaction(models.Model):
 
 
 class OrderApplicant(models.Model):
-    order_id = models.PositiveIntegerField()
-    user_id = models.PositiveIntegerField()
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_applicant')
+    user_id = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='user_id')
     note = models.TextField()
     status = models.CharField(max_length=123)
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.PositiveIntegerField()
-
-
-class OrderStatus(models.Model):
-    name = models.CharField(max_length=123)
-    order_on = models.PositiveIntegerField()
-    change_allow_status = models.CharField(max_length=123)
-    status = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='created_by')
 
 
 class OrderView(models.Model):
