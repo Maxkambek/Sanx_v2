@@ -46,7 +46,8 @@ class LoginVerifyAPIView(generics.GenericAPIView):
             "success": True,
             "message": "User successfully verified",
             "token": str(token),
-            "user_id": user.id
+            "user_id": user.id,
+            'user_type': user.user_type
         }, status=200)
 
 
@@ -92,7 +93,8 @@ class RegisterVerifyView(generics.GenericAPIView):
             "success": True,
             "message": "User successfully verified",
             "token": str(token),
-            "user_id": user.id
+            "user_id": user.id,
+            'user_type': user.user_type
         }, status=200)
 
 

@@ -127,18 +127,14 @@ class Color(models.Model):
 
 class TransportInformation(models.Model):
     user_id = models.PositiveIntegerField()
-
     passport_type = models.CharField(max_length=222)
     passport = models.FileField(upload_to='passport/')
     passport_expiration = models.DateField()
-
     driver_license = models.FileField(upload_to='driver_license/')
-
     payment_type_id = models.PositiveIntegerField()
     car_weight_type_id = models.PositiveIntegerField()
     car_mark_id = models.PositiveIntegerField()
     car_type_id = models.PositiveIntegerField()
     color_id = models.PositiveIntegerField()
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
