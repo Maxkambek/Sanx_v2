@@ -1,12 +1,13 @@
+from django.db.models import Q
 from rest_framework import generics, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from apps.order.models import Order, OrderFiles, TransportDocument, OrderItem, Payment, Transaction, OrderApplicant, \
-    OrderView, OrderStatus
+    OrderView, OrderStatus, Chat, Message
 from .serializers import OrderSerializer, OrderFilesSerializer, TransportDocumentSerializer, OrderItemSerializer, \
     PaymentSerializer, TransactionSerializer, OrderApplicantSerializer, OrderViewSerializer, OrderStatusSerializer, \
-    OrderListSerializer, OrderApplicantListSerializer
+    OrderListSerializer, OrderApplicantListSerializer, ChatSerializer, MessageSerializer, MessageListSerializer
 
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -97,5 +98,47 @@ class OrderApplicantRetrieveAPIView(generics.RetrieveAPIView):
 class OrderApplicantUpdateAPIView(generics.UpdateAPIView):
     queryset = OrderApplicant.objects.all()
     serializer_class = OrderApplicantSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+
+class ChatCreateAPIView(generics.CreateAPIView):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+
+class ChatListAPIView(generics.ListAPIView):
+    serializer_class = ChatSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ('one_id', 'created_at')
+
+    def get_queryset(self):
+        queryset = Chat.objects.filter(Q(one_id=self.request.user.id) | Q(two_id=self.request.user.id))
+        return queryset
+
+
+class MessageCreateAPIView(generics.CreateAPIView):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+
+class MessageListAPIView(generics.ListAPIView):
+    queryset = Message.objects.all()
+    serializer_class = MessageListSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ('type_message', 'chat_id', 'is_read')
+
+
+class MessageUpdateAPIView(generics.UpdateAPIView):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)

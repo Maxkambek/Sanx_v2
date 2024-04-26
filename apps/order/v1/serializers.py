@@ -170,7 +170,41 @@ class ChatSerializer(serializers.ModelSerializer):
         ]
 
 
+class ChatListSerializer(serializers.ModelSerializer):
+    one_id = AccountSerializer(many=False)
+    two_id = AccountSerializer(many=False)
+    order_item_id = OrderItemSerializer(many=False)
+
+    class Meta:
+        model = Chat
+        fields = [
+            'id',
+            'order_item_id',
+            'one_id',
+            'two_id',
+            'created_at'
+        ]
+
+
 class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = [
+            'id',
+            'chat_id',
+            'from_id',
+            'to_id',
+            'is_read',
+            'read_time',
+            'created_at'
+        ]
+
+
+class MessageListSerializer(serializers.ModelSerializer):
+    chat_id = ChatSerializer(many=False)
+    from_id = AccountSerializer(many=False)
+    to_id = AccountSerializer(many=False)
+
     class Meta:
         model = Message
         fields = [

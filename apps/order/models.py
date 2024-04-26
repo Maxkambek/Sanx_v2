@@ -132,16 +132,16 @@ class OrderView(models.Model):
 
 class Chat(models.Model):
     order_item_id = models.PositiveIntegerField()
-    one_id = models.PositiveIntegerField()
-    two_id = models.PositiveIntegerField()
+    one_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='one_id')
+    two_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='two_id')
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Message(models.Model):
     type_message = models.CharField(max_length=123)
-    chat_id = models.PositiveIntegerField()
-    from_id = models.PositiveIntegerField()
-    to_id = models.PositiveIntegerField()
+    chat_id = models.ForeignKey(Chat, on_delete=models.SET_NULL, null=True, related_name='chat_id')
+    from_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='from_id')
+    to_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='to_id')
     is_read = models.BooleanField(default=False)
     read_time = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
