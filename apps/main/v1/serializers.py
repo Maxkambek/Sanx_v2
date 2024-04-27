@@ -1,6 +1,27 @@
 from rest_framework import serializers
 from ..models import Region, Catalog, UserFiles, Subscription, Notification, Story, PaymentType, Currency, \
-    CarWeightType, CarType, CarBrand, CarMark, Color, TransportInformation
+    CarWeightType, CarType, CarBrand, CarMark, Color, TransportInformation, UserRating
+
+
+class UserRatingCreateSerializer(serializers.ModelSerializer):
+    rate = serializers.BooleanField()
+
+    class Meta:
+        model = UserRating
+        fields = [
+            'user_id',
+            'rate'
+        ]
+
+
+class UserRatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRating
+        fields = [
+            'user_id',
+            'positive',
+            'negative'
+        ]
 
 
 class RegionSerializer(serializers.ModelSerializer):

@@ -1,5 +1,6 @@
 from django.db import models
 
+from apps.my_auth.models import Account
 from apps.tools.helpers import REGION_TYPE, CATALOG_TYPE, STORY_TYPE
 
 
@@ -138,3 +139,12 @@ class TransportInformation(models.Model):
     color_id = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class UserRating(models.Model):
+    user_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='user_ratings')
+    positive = models.PositiveIntegerField(default=0)
+    negative = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.user_id

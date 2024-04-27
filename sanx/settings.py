@@ -7,7 +7,7 @@ from firebase_admin import credentials
 env = Env()
 env.read_env()
 
-FIREBASE_SERVICE_ACCOUNT_KEY = '/var/www/Sanx_v2/sanx.json'
+FIREBASE_SERVICE_ACCOUNT_KEY = '/home/dev/Desktop/back/sanx_v2/sanx.json'
 
 firebase_admin.initialize_app(credentials.Certificate(FIREBASE_SERVICE_ACCOUNT_KEY))
 

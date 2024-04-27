@@ -16,4 +16,12 @@ urlpatterns = [
     path('message-create/', views.MessageCreateAPIView.as_view()),
     path('messages/', views.MessageListAPIView.as_view()),
     path('messages/<int:pk>/', views.MessageUpdateAPIView.as_view()),
+    path('order-item-create/', views.OrderItemCreateAPIView.as_view()),
+    path('order-items/', views.OrderItemListAPIView.as_view()),
+    path('order-items/<int:pk>/', views.OrderItemRetrieveUpdateAPIView.as_view()),
+    path('payment-create/', views.PaymentCreateAPIView.as_view()),
+    path('payments/', views.PaymentListAPIView.as_view()),
+    path('payments/<int:pk>/', views.PaymentRetrieveAPIView.as_view()),
+    path('transaction-create/', views.TransactionCreateAPIView.as_view()),
+    path('transactions/', views.TransactionListAPIView.as_view()),
 ]

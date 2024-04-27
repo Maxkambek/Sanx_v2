@@ -2,9 +2,32 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 
 from ..models import Region, Catalog, UserFiles, Subscription, Notification, Story, PaymentType, Currency, \
-    CarWeightType, CarType, CarBrand, CarMark, Color, TransportInformation
+    CarWeightType, CarType, CarBrand, CarMark, Color, TransportInformation, UserRating
 from . import serializers as main_serializers
 from rest_framework import generics, status, response, permissions, authentication, viewsets
+
+
+class UserRatingCreate(generics.GenericAPIView):
+    queryset = UserRating.objects.all()
+    serializer_class = main_serializers.UserRatingCreateSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        user_id = request.data['user_id']
+        rate = request.data['rate']
+        if user_id is None or rate is None:
+            return response.Response({'error': 'Please provide both user_id and rate'},
+                                     status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user = UserRating.objects.get(pk=user_id)
+        except:
+            user = UserRating.objects.create(user_id=user_id, negative=0, positive=0)
+        if rate:
+            user.positive += 1
+        if not rate:
+            user.negative += 1
+        return Response(data={'user_id': user_id, 'positive': user.positive, 'negative': user.negative},
+                        status=status.HTTP_201_CREATED)
 
 
 class RegionList(generics.ListAPIView):

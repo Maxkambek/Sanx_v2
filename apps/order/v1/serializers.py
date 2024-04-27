@@ -127,7 +127,9 @@ class OrderApplicantSerializer(serializers.ModelSerializer):
             'note',
             'status',
             'created_at',
-            'created_by'
+            'updated_at',
+            'created_by',
+            'updated_by'
         ]
 
 
@@ -196,7 +198,10 @@ class MessageSerializer(serializers.ModelSerializer):
             'to_id',
             'is_read',
             'read_time',
-            'created_at'
+            'created_at',
+            'message_text',
+            "message_file",
+            'type_message'
         ]
 
 
@@ -214,7 +219,10 @@ class MessageListSerializer(serializers.ModelSerializer):
             'to_id',
             'is_read',
             'read_time',
-            'created_at'
+            'created_at',
+            'message_text',
+            "message_file",
+            'type_message'
         ]
 
 

@@ -8,9 +8,7 @@ def send_notification(device_tokens, title, body):
         notification=messaging.Notification(title=title, body=body),
         tokens=device_tokens
     )
-
     response = messaging.send_multicast(message)
-
     success_count = response.success_count
     failure_count = response.failure_count
 

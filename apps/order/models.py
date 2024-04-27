@@ -49,8 +49,8 @@ class Order(models.Model):
     volume = models.DecimalField(max_digits=20, decimal_places=2)
     transport_document_id = models.ForeignKey(TransportDocument, on_delete=models.CASCADE,
                                               related_name='transport_documents')
-    region_id = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='order_region')
-    status_id = models.ForeignKey(OrderStatus, on_delete=models.CASCADE, related_name="order_status")
+    region_id = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True, related_name='order_region')
+    status_id = models.ForeignKey(OrderStatus, on_delete=models.CASCADE, related_name="order_status", default='Active')
     note = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='order_owner')
@@ -91,12 +91,18 @@ class OrderItem(models.Model):
 
 
 class Payment(models.Model):
-    from_id = models.PositiveIntegerField()
-    to_id = models.PositiveIntegerField()
+    STATUS_CHOICES = (
+        ('Pending', 'Pending'),
+        ('Waiting', 'Waiting'),
+        ('Approved', 'Approved'),
+    )
+    from_id = models.ForeignKey(Account, on_delete=models.SET_NULL, related_name='payment_from_id', null=True)
+    to_id = models.ForeignKey(Account, on_delete=models.SET_NULL, related_name='payment_to_id', null=True)
     price = models.DecimalField(max_digits=20, decimal_places=2)
-    order_item_id = models.PositiveIntegerField()
-    payment_type_id = models.PositiveIntegerField()
-    status = models.CharField(max_length=123)
+    order_item_id = models.ForeignKey(OrderItem, on_delete=models.SET_NULL, null=True, related_name='payment_item_id')
+    payment_type_id = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, null=True,
+                                        related_name='payment_payment_type_id')
+    status = models.CharField(max_length=123, choices=STATUS_CHOICES, default="Pending")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.PositiveIntegerField()
@@ -104,44 +110,62 @@ class Payment(models.Model):
 
 
 class Transaction(models.Model):
-    from_id = models.PositiveIntegerField()
-    to_id = models.PositiveIntegerField()
-    payment_id = models.PositiveIntegerField()
-    order_item_id = models.PositiveIntegerField()
+    from_id = models.ForeignKey(Account, on_delete=models.SET_NULL, related_name='from_transaction_id', null=True)
+    to_id = models.ForeignKey(Account, on_delete=models.SET_NULL, related_name='to_transaction_id', null=True)
+    payment_id = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True, related_name="payment_transaction_id")
+    order_item_id = models.ForeignKey(OrderItem, on_delete=models.SET_NULL, null=True,
+                                      related_name="order_transaction_id")
     price = models.DecimalField(max_digits=20, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.PositiveIntegerField()
+    created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='transaction_created_by')
 
 
 class OrderApplicant(models.Model):
+    STATUS_CHOICES = (
+        ('New', 'New'),
+        ('OwnerCancelled', 'OwnerCancelled'),
+        ('InvitedCancelled', 'InvitedCancelled'),
+        ('Accepted', 'Accepted'),
+    )
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_applicant')
     user_id = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='user_id')
     note = models.TextField()
-    status = models.CharField(max_length=123)
+    status = models.CharField(max_length=123, choices=STATUS_CHOICES, default="New")
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='created_by')
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='order_applicant_created_by')
+    updated_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True,
+                                   related_name='order_applicant_updated_by')
 
 
 class OrderView(models.Model):
-    order_id = models.PositiveIntegerField()
-    user_id = models.PositiveIntegerField()
+    order_id = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, related_name="order_view")
+    user_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name="order_view_user_id")
     is_liked = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 class Chat(models.Model):
-    order_item_id = models.PositiveIntegerField()
-    one_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='one_id')
-    two_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='two_id')
+    order_item_id = models.ForeignKey(OrderItem, on_delete=models.SET_NULL, null=True, related_name="chat_item")
+    one_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='chat_one_id')
+    two_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='chat_two_id')
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Message(models.Model):
+    TYPE_MESSAGE = (
+        ('Text', 'Text'),
+        ('Image', 'Image'),
+        ('Video', 'Video'),
+        ('Audio', 'Audio'),
+    )
     type_message = models.CharField(max_length=123)
     chat_id = models.ForeignKey(Chat, on_delete=models.SET_NULL, null=True, related_name='chat_id')
     from_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='from_id')
     to_id = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='to_id')
     is_read = models.BooleanField(default=False)
     read_time = models.DateTimeField()
+    message_text = models.TextField(null=True, blank=True)
+    message_file = models.FileField(upload_to='message_files/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
