@@ -34,7 +34,9 @@ class OrderSerializer(serializers.ModelSerializer):
             'created_at',
             'created_by',
             'updated_at',
-            'updated_by'
+            'updated_by',
+            'latitude',
+            'longitude'
         ]
 
 
@@ -267,7 +269,9 @@ class OrderListSerializer(serializers.ModelSerializer):
             'created_by',
             'updated_at',
             'updated_by',
-            'order_files'
+            'order_files',
+            'latitude',
+            'longitude'
         ]
 
 

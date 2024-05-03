@@ -56,6 +56,8 @@ class Order(models.Model):
     created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='order_owner')
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name='order_updated_by')
+    latitude = models.DecimalField(max_digits=20, decimal_places=12, null=True)
+    longitude = models.DecimalField(max_digits=20, decimal_places=12, null=True)
 
     def __str__(self):
         return self.name

@@ -26,5 +26,5 @@ urlpatterns = [
     path('transport-information-create/', views.TransportInformationCreate.as_view(),
          name='transport-information-create'),
     path('', include(router.urls)),
-
+    path('user-rating-create/', views.UserRatingCreate.as_view(), name='user-rating-create'),
 ]
