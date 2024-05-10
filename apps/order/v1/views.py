@@ -57,7 +57,7 @@ class OrderListAPIView(generics.ListAPIView):
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = (
         'name', 'catalog_id', 'order_type', 'from_region_id', 'to_region_id', 'transport_type_id', 'weight', 'brutto',
-        'volume')
+        'volume', 'status_id')
 
 
 class OrderFilesCreateAPIView(generics.CreateAPIView):
