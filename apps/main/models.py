@@ -130,6 +130,8 @@ class TransportInformation(models.Model):
     user_id = models.PositiveIntegerField()
     passport_type = models.CharField(max_length=222)
     passport = models.FileField(upload_to='passport/')
+    passport_back = models.FileField(upload_to='passport/', null=True)
+    passport_with_face = models.FileField(upload_to='passport/', null=True)
     passport_expiration = models.DateField()
     driver_license = models.FileField(upload_to='driver_license/')
     payment_type_id = models.PositiveIntegerField()

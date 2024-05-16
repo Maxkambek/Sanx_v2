@@ -53,7 +53,7 @@ class OrderDetailAPIView(generics.RetrieveUpdateAPIView):
 
 class OrderListAPIView(generics.ListAPIView):
     queryset = Order.objects.all()
-    serializer_class = OrderListSerializer
+    serializer_class = OrderSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = (
         'name', 'catalog_id', 'order_type', 'from_region_id', 'to_region_id', 'transport_type_id', 'weight', 'brutto',

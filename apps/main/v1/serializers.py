@@ -217,6 +217,8 @@ class TransportInformationSerializer(serializers.ModelSerializer):
             'passport',
             'passport_expiration',
             'driver_license',
+            'passport_back',
+            'passport_with_face',
             'payment_type_id',
             'car_weight_type_id',
             'car_mark_id',
