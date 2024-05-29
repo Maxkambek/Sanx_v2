@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from ..models import Order, TransportDocument, OrderItem, Payment, Transaction, OrderApplicant, OrderStatus, OrderView, \
     Chat, Message, OrderFiles
-from ...adminstration.serializers import AccountSerializer
+from ...adminstration.serializers import AccountSerializer, AccountFKSerializer
 from ...main.v1.serializers import CatalogSerializer, CurrencySerializer, PaymentTypeSerializer, RegionSerializer, \
-    CarTypeSerializer
+    CarTypeSerializer, CatalogFKSerializer, CurrencyFKSerializer, PaymentTypeFKSerializer, RegionFKSerializer, \
+    CarTypeFKSerializer
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -59,6 +60,15 @@ class TransportDocumentSerializer(serializers.ModelSerializer):
             'status',
             'created_at',
             'updated_at'
+        ]
+
+
+class TransportDocumentFKSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TransportDocument
+        fields = [
+            'id',
+            'name',
         ]
 
 
@@ -136,6 +146,20 @@ class OrderApplicantSerializer(serializers.ModelSerializer):
 
 
 class OrderStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderStatus
+        fields = [
+            'id',
+            'name',
+            'order_on',
+            'change_allow_status',
+            'status',
+            'created_at',
+            'updated_at'
+        ]
+
+
+class OrderStatusFKSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderStatus
         fields = [
@@ -229,16 +253,16 @@ class MessageListSerializer(serializers.ModelSerializer):
 
 
 class OrderListSerializer(serializers.ModelSerializer):
-    catalog_id = CatalogSerializer(many=False)
-    currency_id = CurrencySerializer(many=False)
-    payment_type_id = PaymentTypeSerializer(many=False)
-    from_region_id = RegionSerializer(many=False)
-    to_region_id = RegionSerializer(many=False)
-    transport_type_id = CarTypeSerializer(many=False)
-    transport_document_id = TransportDocumentSerializer(many=False)
-    region_id = RegionSerializer(many=False)
-    status_id = OrderStatusSerializer(many=False)
-    created_by = AccountSerializer(many=False)
+    catalog_id = CatalogFKSerializer(many=False)
+    currency_id = CurrencyFKSerializer(many=False)
+    payment_type_id = PaymentTypeFKSerializer(many=False)
+    from_region_id = RegionFKSerializer(many=False)
+    to_region_id = RegionFKSerializer(many=False)
+    transport_type_id = CarTypeFKSerializer(many=False)
+    transport_document_id = TransportDocumentFKSerializer(many=False)
+    region_id = RegionFKSerializer(many=False)
+    status_id = OrderStatusFKSerializer(many=False)
+    created_by = AccountFKSerializer(many=False)
     order_files = OrderFilesSerializer(many=True)
 
     class Meta:

@@ -33,6 +33,22 @@ class AccountSerializer(serializers.ModelSerializer):
         ]
 
 
+class AccountFKSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = [
+            'id',
+            'phone',
+            'first_name',
+            'last_name',
+            'middle_name',
+            'birth_date',
+            'avatar',
+            'user_type',
+
+        ]
+
+
 class VerifyCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = VerifyCode

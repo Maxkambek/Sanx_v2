@@ -24,4 +24,5 @@ urlpatterns = [
     path('payments/<int:pk>/', views.PaymentRetrieveAPIView.as_view()),
     path('transaction-create/', views.TransactionCreateAPIView.as_view()),
     path('transactions/', views.TransactionListAPIView.as_view()),
+    path('transport-documents/', views.TransportDocumentListAPIView.as_view()),
 ]

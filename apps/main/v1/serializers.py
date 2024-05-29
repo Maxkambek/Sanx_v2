@@ -40,6 +40,16 @@ class RegionSerializer(serializers.ModelSerializer):
         ]
 
 
+class RegionFKSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Region
+        fields = [
+            'id',
+            'name',
+            'flag',
+        ]
+
+
 class CatalogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Catalog
@@ -52,6 +62,15 @@ class CatalogSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
             'type_catalog'
+        ]
+
+
+class CatalogFKSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Catalog
+        fields = [
+            'id',
+            'name',
         ]
 
 
@@ -121,6 +140,15 @@ class PaymentTypeSerializer(serializers.ModelSerializer):
         ]
 
 
+class PaymentTypeFKSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentType
+        fields = [
+            'id',
+            'name',
+        ]
+
+
 class CurrencySerializer(serializers.ModelSerializer):
     class Meta:
         model = Currency
@@ -132,6 +160,15 @@ class CurrencySerializer(serializers.ModelSerializer):
             'updated_at',
             'order_on',
             'status'
+        ]
+
+
+class CurrencyFKSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Currency
+        fields = [
+            'id',
+            'name',
         ]
 
 
@@ -163,6 +200,15 @@ class CarTypeSerializer(serializers.ModelSerializer):
             'status',
             'created_at',
             'updated_at'
+        ]
+
+
+class CarTypeFKSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarType
+        fields = [
+            'id',
+            'name',
         ]
 
 

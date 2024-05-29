@@ -1,15 +1,15 @@
 import os
 from pathlib import Path
 from environs import Env
-import firebase_admin
-from firebase_admin import credentials
+# import firebase_admin
+# from firebase_admin import credentials
 
 env = Env()
 env.read_env()
 
-FIREBASE_SERVICE_ACCOUNT_KEY = '/var/www/Sanx_v2/sanx.json'
+# FIREBASE_SERVICE_ACCOUNT_KEY = '/var/www/Sanx_v2/sanx.json'
 
-firebase_admin.initialize_app(credentials.Certificate(FIREBASE_SERVICE_ACCOUNT_KEY))
+# firebase_admin.initialize_app(credentials.Certificate(FIREBASE_SERVICE_ACCOUNT_KEY))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 

@@ -12,6 +12,11 @@ from .serializers import OrderSerializer, OrderFilesSerializer, TransportDocumen
 from django_filters.rest_framework import DjangoFilterBackend
 
 
+class TransportDocumentListAPIView(generics.ListAPIView):
+    serializer_class = TransportDocumentSerializer
+    queryset = TransportDocument.objects.all()
+
+
 class OrderCreateAPIView(generics.CreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -53,7 +58,7 @@ class OrderDetailAPIView(generics.RetrieveUpdateAPIView):
 
 class OrderListAPIView(generics.ListAPIView):
     queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+    serializer_class = OrderListSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = (
         'name', 'catalog_id', 'order_type', 'from_region_id', 'to_region_id', 'transport_type_id', 'weight', 'brutto',
