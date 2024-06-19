@@ -64,7 +64,7 @@ class Order(models.Model):
 
 
 class OrderFiles(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='order_files')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_files')
     file = models.FileField(upload_to='order_files')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

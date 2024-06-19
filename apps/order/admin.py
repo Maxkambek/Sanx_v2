@@ -1,9 +1,10 @@
 from django.contrib import admin
 
 from apps.order.models import Order, TransportDocument, OrderItem, Payment, Transaction, OrderView, OrderStatus, OrderApplicant, \
-    Chat, Message
+    Chat, Message, OrderFiles
 
 admin.site.register(Order)
+admin.site.register(OrderFiles)
 admin.site.register(TransportDocument)
 admin.site.register(OrderItem)
 admin.site.register(Payment)
