@@ -8,6 +8,16 @@ from ..models import Account, VerifyCode
 from ...tools.helpers import send_sms
 
 
+
+class CheckUserActive(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        if self.request.user.is_verified:
+            return Response({'user_verification':True})
+        return Response({'user_verification':False})
+        
+
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
 

@@ -20,6 +20,7 @@ class AccountManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser = True
         user.is_active = True
+        user.is_verified = True
         user.save(using=self._db)
         return user
 
@@ -42,6 +43,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
 
     objects = AccountManager()
     USERNAME_FIELD = 'phone'
